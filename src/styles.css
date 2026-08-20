@@ -1,0 +1,396 @@
+/* ===========================
+   Bloom Power Color Palette
+   Hot Pink:     #ff61ba / #e0489e
+   Teal:         #4bb8b4 / #31cdcf
+   White:        #ffffff
+   Light lavender: #f3f0fa
+   =========================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #f0fafa;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* ---- App Shell ---- */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---- Header ---- */
+.header {
+  background: linear-gradient(135deg, #ff61ba 0%, #e0489e 100%);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(255, 97, 186, 0.4);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.header-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.header-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.5rem;
+  font-weight: 400;
+}
+
+/* ---- Main Content ---- */
+.main {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.page-intro {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e0489e;
+  margin-bottom: 0.4rem;
+}
+
+.section-description {
+  font-size: 0.9rem;
+  color: #4bb8b4;
+}
+
+/* ---- Filter Bar ---- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1.5px solid #ff61ba;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(255, 97, 186, 0.12);
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #e0489e;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.filter-inputs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4bb8b4;
+}
+
+.filter-field input[type="date"] {
+  padding: 0.4rem 0.65rem;
+  border: 1.5px solid #b2e4e2;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1a1a2e;
+  background: #f0fafa;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filter-field input[type="date"]:focus {
+  border-color: #4bb8b4;
+  box-shadow: 0 0 0 3px rgba(75, 184, 180, 0.2);
+}
+
+.clear-btn {
+  padding: 0.4rem 0.9rem;
+  background: #ff61ba;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.clear-btn:hover {
+  background: #e0489e;
+  transform: translateY(-1px);
+}
+
+.clear-btn:active {
+  transform: translateY(0);
+}
+
+.filter-count {
+  font-size: 0.82rem;
+  color: #4bb8b4;
+  font-style: italic;
+  margin-left: auto;
+}
+
+/* ---- Table Wrapper (horizontal scroll) ---- */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(255, 97, 186, 0.18), 0 1px 4px rgba(75, 184, 180, 0.15);
+  border: 1.5px solid #ff61ba;
+}
+
+/* ---- Table Container ---- */
+.table-container {
+  background: #ffffff;
+  min-width: 1100px;
+}
+
+/* ---- Table ---- */
+.grants-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+/* Header row */
+.grants-table thead tr {
+  background: linear-gradient(90deg, #ff61ba 0%, #e0489e 100%);
+}
+
+.grants-table thead th {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #4bb8b4;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.grants-table thead th.sortable {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.grants-table thead th.sortable:hover {
+  background: linear-gradient(90deg, #e0489e 0%, #c0357f 100%);
+}
+
+/* Body rows */
+.grants-table tbody tr {
+  border-bottom: 1px solid #f0d6ea;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  background-color: #ffffff;
+}
+
+.grants-table tbody tr:nth-child(even) {
+  background-color: #f3f0fa;
+}
+
+.grants-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.grants-table tbody tr.clickable-row {
+  cursor: pointer;
+}
+
+.grants-table tbody tr.clickable-row:hover {
+  background-color: #e0f7f6;
+  transform: translateX(2px);
+}
+
+.grants-table tbody tr.clickable-row:active {
+  background-color: #f9d6ee;
+}
+
+/* All cells inherit their row background */
+.grants-table tbody td {
+  padding: 0.875rem 1rem;
+  color: #1a1a2e;
+  vertical-align: middle;
+  background-color: inherit;
+}
+
+/* Grant name — bold */
+.col-name {
+  font-weight: 600;
+  min-width: 200px;
+  color: #e0489e;
+}
+
+/* Geographic eligibility */
+.col-geo {
+  white-space: nowrap;
+  min-width: 160px;
+  font-weight: 500;
+}
+
+/* Typical award */
+.col-award {
+  white-space: nowrap;
+  min-width: 120px;
+  font-weight: 600;
+  color: #4bb8b4;
+}
+
+/* Email column */
+.col-email {
+  white-space: nowrap;
+  min-width: 200px;
+}
+.email-link {
+  color: #4bb8b4;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+  color: #e0489e;
+}
+
+.tbd {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Deadline */
+.col-deadline {
+  white-space: nowrap;
+  min-width: 160px;
+  color: #e0489e;
+  font-weight: 500;
+}
+
+/* Notes columns — wrap text */
+.col-notes,
+.col-fit {
+  min-width: 260px;
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+/* ---- Status Badge ---- */
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #f3f0fa;
+  color: #7b5ea7;
+}
+
+.status-badge.status-researching {
+  background: #e0f7f6;
+  color: #2a9d9a;
+}
+
+.status-badge.status-active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.status-submitted {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.status-badge.status-awarded {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.status-declined {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ---- Empty State ---- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #4bb8b4;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* ---- Footer ---- */
+.footer {
+  background: linear-gradient(135deg, #ff61ba 0%, #e0489e 100%);
+  text-align: center;
+  padding: 1.25rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  border-top: 2px solid #4bb8b4;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .header-title {
+    font-size: 1.75rem;
+  }
+
+  .grants-table {
+    font-size: 0.8rem;
+  }
+
+  .grants-table thead th,
+  .grants-table tbody td {
+    padding: 0.65rem 0.75rem;
+  }
+}
