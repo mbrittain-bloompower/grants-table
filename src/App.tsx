@@ -9,6 +9,7 @@ import bloomLogo from '../public/Bloom-Logo-Final-transparent-white-words_box.pn
 const App: React.FC = () => {
   const [fromDate, setFromDate] = useState<string>('');
   const [toDate, setToDate] = useState<string>('');
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   // Only filter grants that have a parseable ISO date in nextDeadline
   const filteredGrants = grants.filter((grant) => {
@@ -26,9 +27,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="app">
+    <div className={`app${editMode ? ' edit-mode' : ''}`}>
       <header className="header">
         <div className="header-content">
+          {editMode && (
+            <button className="done-btn" onClick={() => setEditMode(false)}>
+              ✓ Done
+            </button>
+          )}
+          {!editMode && (
+            <button className="edit-btn" onClick={() => setEditMode(true)} title="Edit mode">
+              ✏️
+            </button>
+          )}
           <div className="header-logo-wrap">
             <img
               src={bloomLogo}

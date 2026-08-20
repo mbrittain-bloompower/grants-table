@@ -394,3 +394,162 @@ body {
     padding: 0.65rem 0.75rem;
   }
 }
+
+/* ---- Edit / Done Buttons ---- */
+.header-content {
+  position: relative;
+}
+
+.edit-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.edit-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.08);
+}
+
+.done-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.done-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.04);
+}
+
+/* ---- Edit Mode: swap pink ↔ teal ---- */
+
+/* Header background */
+.edit-mode .header {
+  background: linear-gradient(135deg, #4bb8b4 0%, #31cdcf 100%);
+  box-shadow: 0 4px 16px rgba(75, 184, 180, 0.4);
+}
+
+/* Footer */
+.edit-mode .footer {
+  background: linear-gradient(135deg, #4bb8b4 0%, #31cdcf 100%);
+  border-top-color: #ff61ba;
+}
+
+/* Section title */
+.edit-mode .section-title {
+  color: #4bb8b4;
+}
+
+/* Section description */
+.edit-mode .section-description {
+  color: #e0489e;
+}
+
+/* Filter bar border and label */
+.edit-mode .filter-bar {
+  border-color: #4bb8b4;
+  box-shadow: 0 2px 8px rgba(75, 184, 180, 0.12);
+}
+
+.edit-mode .filter-label {
+  color: #4bb8b4;
+}
+
+.edit-mode .filter-field label {
+  color: #e0489e;
+}
+
+.edit-mode .clear-btn {
+  background: #4bb8b4;
+}
+
+.edit-mode .clear-btn:hover {
+  background: #31cdcf;
+}
+
+.edit-mode .filter-count {
+  color: #e0489e;
+}
+
+/* Table wrapper border */
+.edit-mode .table-wrapper {
+  border-color: #4bb8b4;
+  box-shadow: 0 4px 24px rgba(75, 184, 180, 0.18), 0 1px 4px rgba(255, 97, 186, 0.15);
+}
+
+/* Table header row */
+.edit-mode .grants-table thead tr {
+  background: linear-gradient(90deg, #4bb8b4 0%, #31cdcf 100%);
+}
+
+.edit-mode .grants-table thead th {
+  border-bottom-color: #ff61ba;
+}
+
+.edit-mode .grants-table thead th.sortable:hover {
+  background: linear-gradient(90deg, #31cdcf 0%, #20b8bb 100%);
+}
+
+/* Row borders */
+.edit-mode .grants-table tbody tr {
+  border-bottom-color: #d0eeec;
+}
+
+.edit-mode .grants-table tbody tr.clickable-row:hover {
+  background-color: #f9d6ee;
+}
+
+.edit-mode .grants-table tbody tr.clickable-row:active {
+  background-color: #e0f7f6;
+}
+
+/* Grant name color */
+.edit-mode .col-name {
+  color: #4bb8b4;
+}
+
+/* Award color */
+.edit-mode .col-award {
+  color: #e0489e;
+}
+
+/* Email link */
+.edit-mode .email-link {
+  color: #e0489e;
+}
+
+.edit-mode .email-link:hover {
+  color: #4bb8b4;
+}
+
+/* Deadline */
+.edit-mode .col-deadline {
+  color: #4bb8b4;
+}
+
+/* Empty state */
+.edit-mode .empty-state {
+  color: #e0489e;
+}
