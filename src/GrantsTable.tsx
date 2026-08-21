@@ -4,11 +4,16 @@ import { Grant } from './data';
 type SortField = 'name' | 'contactEmail' | 'nextDeadline' | 'eligibilityRequirements' | 'bloomPowerFitNotes' | 'geographicEligibility' | 'typicalAward' | 'applicationStatus';
 type SortDirection = 'asc' | 'desc';
 
+const APPLICATION_STATUSES = ['Researching', 'Active', 'Submitted', 'Awarded', 'Declined'];
+
 interface GrantsTableProps {
   grants: Grant[];
+  editMode?: boolean;
+  onStatusChange?: (id: string, status: string) => void;
+  onDelete?: (id: string) => void;
 }
 
-const GrantsTable: React.FC<GrantsTableProps> = ({ grants }) => {
+const GrantsTable: React.FC<GrantsTableProps> = ({ grants, editMode, onStatusChange, onDelete }) => {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -68,12 +73,13 @@ const GrantsTable: React.FC<GrantsTableProps> = ({ grants }) => {
               <th className="sortable" onClick={() => handleSort('bloomPowerFitNotes')}>
                 Bloom Power Fit Notes{indicator('bloomPowerFitNotes')}
               </th>
+              {editMode && onDelete && <th className="col-delete"></th>}
             </tr>
           </thead>
           <tbody>
             {sortedGrants.length === 0 ? (
               <tr>
-                <td colSpan={8} className="empty-state">
+                <td colSpan={editMode && onDelete ? 9 : 8} className="empty-state">
                   No grants match the selected date range.
                 </td>
               </tr>
@@ -89,9 +95,30 @@ const GrantsTable: React.FC<GrantsTableProps> = ({ grants }) => {
                   <td className="col-geo">{grant.geographicEligibility}</td>
                   <td className="col-award">{grant.typicalAward}</td>
                   <td>
-                    <span className={`status-badge status-${grant.applicationStatus.toLowerCase().replace(/\s+/g, '-')}`}>
-                      {grant.applicationStatus}
-                    </span>
+                    {editMode ? (
+                      <div className="status-edit-cell">
+                        <span className={`status-badge status-${grant.applicationStatus.toLowerCase().replace(/\s+/g, '-')}`}>
+                          {grant.applicationStatus}
+                        </span>
+                        <select
+                          className="status-inline-select"
+                          value={grant.applicationStatus}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            onStatusChange?.(grant.id, e.target.value);
+                          }}
+                        >
+                          {APPLICATION_STATUSES.map((s) => (
+                            <option key={s} value={s}>{s}</option>
+                          ))}
+                        </select>
+                      </div>
+                    ) : (
+                      <span className={`status-badge status-${grant.applicationStatus.toLowerCase().replace(/\s+/g, '-')}`}>
+                        {grant.applicationStatus}
+                      </span>
+                    )}
                   </td>
                   <td className="col-email">
                     {grant.contactEmail !== 'TBD' ? (
@@ -109,6 +136,22 @@ const GrantsTable: React.FC<GrantsTableProps> = ({ grants }) => {
                   <td className="col-deadline">{grant.nextDeadline || '—'}</td>
                   <td className="col-notes">{grant.eligibilityRequirements}</td>
                   <td className="col-fit">{grant.bloomPowerFitNotes}</td>
+                  {editMode && onDelete && (
+                    <td className="col-delete">
+                      <button
+                        className="delete-btn"
+                        title="Delete this grant"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm('Delete this grant?')) {
+                            onDelete(grant.id);
+                          }
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))
             )}

@@ -1,5 +1,5 @@
 export interface Grant {
-  id: number;
+  id: string;          // was: number — Amplify generates UUID strings
   name: string;
   contactEmail: string;
   nextDeadline: string;
@@ -9,11 +9,13 @@ export interface Grant {
   typicalAward: string;
   applicationStatus: string;
   url: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export const grants: Grant[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Bank of America Charitable Foundation',
     contactEmail: 'foundation@bofa.com',
     nextDeadline: 'TBD — 2026 windows have passed',
@@ -25,7 +27,7 @@ export const grants: Grant[] = [
     url: 'https://about.bankofamerica.com/en/making-an-impact/charitable-foundation-grant-faq',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Florida Blue Foundation',
     contactEmail: 'floridabluefoundation@floridablue.com',
     nextDeadline: 'TBD',
@@ -37,7 +39,7 @@ export const grants: Grant[] = [
     url: 'https://www.floridablue.com/foundation/community-investments',
   },
   {
-    id: 3,
+    id: '3',
     name: 'Publix Charities',
     contactEmail: 'charitable.donationshelp@publix.com',
     nextDeadline: 'Rolling / TBD',
@@ -49,7 +51,7 @@ export const grants: Grant[] = [
     url: 'https://corporate.publix.com/community/giving',
   },
   {
-    id: 4,
+    id: '4',
     name: 'Walmart Spark Good Local Grants',
     contactEmail: 'TBD',
     nextDeadline: 'TBD — verify current cycle',
@@ -61,7 +63,7 @@ export const grants: Grant[] = [
     url: 'https://walmart.org/sparkgood',
   },
   {
-    id: 5,
+    id: '5',
     name: 'PNC Foundation / PNC Grow Up Great',
     contactEmail: 'pnc.growupgreat@pnc.com',
     nextDeadline: 'Varies by program/region; TBD',
@@ -73,7 +75,7 @@ export const grants: Grant[] = [
     url: 'https://www.pnc.com/en/about-pnc/corporate-responsibility/philanthropy.html',
   },
   {
-    id: 6,
+    id: '6',
     name: 'Wells Fargo Foundation',
     contactEmail: 'grantadministration@wellsfargo.com',
     nextDeadline: 'TBD',
@@ -85,7 +87,7 @@ export const grants: Grant[] = [
     url: 'https://www.wellsfargo.com/about/corporate-responsibility/community-giving/',
   },
   {
-    id: 7,
+    id: '7',
     name: 'State Farm Good Neighbor Citizenship Company Grants',
     contactEmail: 'TBD',
     nextDeadline: 'TBD — invitation process',
@@ -97,7 +99,7 @@ export const grants: Grant[] = [
     url: 'https://www.statefarm.com/about-us/community-grants',
   },
   {
-    id: 8,
+    id: '8',
     name: 'Youth Service America – We Serve to Remember 9/11 Day of Service Grants',
     contactEmail: 'sganske@ysa.org',
     nextDeadline: 'TBD — 2026 deadline passed',
@@ -109,7 +111,7 @@ export const grants: Grant[] = [
     url: 'https://ysa.org/grants/',
   },
   {
-    id: 9,
+    id: '9',
     name: 'The Allstate Foundation – Good Starts Young / community giving',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -121,7 +123,7 @@ export const grants: Grant[] = [
     url: 'https://www.nassp.org/programs/student-programs/national-student-council/',
   },
   {
-    id: 10,
+    id: '10',
     name: 'National Environmental Education Foundation (NEEF) – Grant Programs',
     contactEmail: 'grants@neefusa.org',
     nextDeadline: 'TBD',
@@ -133,7 +135,7 @@ export const grants: Grant[] = [
     url: 'https://www.neefusa.org/grants',
   },
   {
-    id: 11,
+    id: '11',
     name: 'US Department of Health and Human Services (HHS) – Grants.gov opportunities',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -145,7 +147,7 @@ export const grants: Grant[] = [
     url: 'https://www.grants.gov',
   },
   {
-    id: 12,
+    id: '12',
     name: 'American Legion Child Welfare Foundation',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -157,7 +159,7 @@ export const grants: Grant[] = [
     url: 'https://cwf-inc.org',
   },
   {
-    id: 13,
+    id: '13',
     name: 'Youth as Resources',
     contactEmail: 'jreeder@youthasresources.org',
     nextDeadline: 'TBD',
@@ -169,7 +171,7 @@ export const grants: Grant[] = [
     url: 'https://www.youthasresources.org',
   },
   {
-    id: 14,
+    id: '14',
     name: 'Project Learning Tree / Environmental Education Grants',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -181,7 +183,7 @@ export const grants: Grant[] = [
     url: 'https://www.plt.org',
   },
   {
-    id: 15,
+    id: '15',
     name: 'Jim Moran Foundation',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -193,7 +195,7 @@ export const grants: Grant[] = [
     url: 'https://jimmoranfoundation.org/grant/guidelines',
   },
   {
-    id: 16,
+    id: '16',
     name: "Children's Services Council of Broward County",
     contactEmail: 'info@cscbroward.org',
     nextDeadline: 'TBD',
@@ -205,7 +207,7 @@ export const grants: Grant[] = [
     url: 'https://www.cscbroward.org/provider/',
   },
   {
-    id: 17,
+    id: '17',
     name: 'Helios Education Foundation',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -217,7 +219,7 @@ export const grants: Grant[] = [
     url: 'https://www.helios.org/grants',
   },
   {
-    id: 18,
+    id: '18',
     name: 'OYC Miami',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -229,7 +231,7 @@ export const grants: Grant[] = [
     url: 'https://www.oycmiami.org',
   },
   {
-    id: 19,
+    id: '19',
     name: 'Community Foundation of Broward',
     contactEmail: 'grants@cfbroward.org',
     nextDeadline: 'TBD',
@@ -241,7 +243,7 @@ export const grants: Grant[] = [
     url: 'https://www.cfbroward.org/receive/apply-for-grants',
   },
   {
-    id: 20,
+    id: '20',
     name: 'Florida Humanities',
     contactEmail: 'grants@flahum.org',
     nextDeadline: 'August 5, 2026',
@@ -253,7 +255,7 @@ export const grants: Grant[] = [
     url: 'https://floridahumanities.org/grants',
   },
   {
-    id: 21,
+    id: '21',
     name: 'Truist Foundation',
     contactEmail: 'truistfoundation@truist.com',
     nextDeadline: 'TBD',
@@ -265,7 +267,7 @@ export const grants: Grant[] = [
     url: 'https://www.truist.com/purpose/truist-foundation/grant-application',
   },
   {
-    id: 22,
+    id: '22',
     name: 'Citizens Foundation / Citizens corporate giving',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
@@ -277,7 +279,7 @@ export const grants: Grant[] = [
     url: 'https://www.citizensbank.com/about-us/community/corporate-giving.aspx',
   },
   {
-    id: 23,
+    id: '23',
     name: 'TD Charitable Foundation',
     contactEmail: 'FloridaCharitableGiving@td.com',
     nextDeadline: 'TBD',
@@ -289,7 +291,7 @@ export const grants: Grant[] = [
     url: 'https://www.tdbank.com/corporate-responsibility/the-ready-commitment/',
   },
   {
-    id: 24,
+    id: '24',
     name: 'First Horizon Foundation',
     contactEmail: 'Foundation@FirstHorizon.com',
     nextDeadline: 'TBD',
@@ -301,7 +303,7 @@ export const grants: Grant[] = [
     url: 'https://www.firsthorizonfoundation.com',
   },
   {
-    id: 25,
+    id: '25',
     name: 'NBCUniversal Local Impact Grants',
     contactEmail: 'TBD',
     nextDeadline: 'TBD',
