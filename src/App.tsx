@@ -3,6 +3,7 @@ import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import GrantsTable from './GrantsTable';
 import AddGrantModal from './AddGrantModal';
+import EditGrantModal from './EditGrantModal';
 import { Grant } from './data';
 import { client } from './amplifyClient';
 import './styles.css';
@@ -19,11 +20,15 @@ const AppContent: React.FC = () => {
   const [grants, setGrants] = useState<Grant[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Fetch all grants on mount
+  const [editingGrant, setEditingGrant] = useState<Grant | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editError, setEditError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchGrants = async () => {
       try {
@@ -38,7 +43,6 @@ const AppContent: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchGrants();
   }, []);
 
@@ -73,14 +77,29 @@ const AppContent: React.FC = () => {
     }
   };
 
+  const handleEditGrant = async (id: string, updated: Partial<Omit<Grant, 'id' | 'createdAt' | 'updatedAt'>>) => {
+    setIsEditing(true);
+    setEditError(null);
+    try {
+      const result = await client.models.Grant.update({ id, ...updated });
+      if (result.data) {
+        setGrants((prev) => prev.map((g) => g.id === id ? { ...g, ...updated } : g));
+        setEditingGrant(null);
+      }
+    } catch (err) {
+      setEditError('Failed to save changes. Please try again.');
+      console.error('Error updating grant:', err);
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
   const handleStatusChange = async (id: string, status: string) => {
-    // Optimistic update
     const prev = grants.find((g) => g.id === id);
     setGrants((all) => all.map((g) => g.id === id ? { ...g, applicationStatus: status } : g));
     try {
       await client.models.Grant.update({ id, applicationStatus: status });
     } catch (err) {
-      // Revert on failure
       if (prev) {
         setGrants((all) => all.map((g) => g.id === id ? { ...g, applicationStatus: prev.applicationStatus } : g));
       }
@@ -113,11 +132,7 @@ const AppContent: React.FC = () => {
         )}
         <div className="header-content">
           <div className="header-logo-wrap">
-            <img
-              src={bloomLogo}
-              alt="Bloom Power logo"
-              className="header-logo"
-            />
+            <img src={bloomLogo} alt="Bloom Power logo" className="header-logo" />
           </div>
           <p className="header-subtitle">Grant Opportunities Directory</p>
         </div>
@@ -130,20 +145,16 @@ const AppContent: React.FC = () => {
         <div className="page-intro">
           <h2 className="section-title">Available Grants</h2>
           <p className="section-description">
-            Click any column header to sort. Click a row to view full grant details.
+            {editMode
+              ? 'Click any row to edit. Use the status dropdown to change status. Click ✕ to delete.'
+              : 'Click any column header to sort. Click a row to view full grant details.'}
           </p>
         </div>
 
         {error && (
           <div className="error-banner" role="alert">
             <span>{error}</span>
-            <button
-              className="error-dismiss"
-              onClick={() => setError(null)}
-              aria-label="Dismiss error"
-            >
-              ✕
-            </button>
+            <button className="error-dismiss" onClick={() => setError(null)} aria-label="Dismiss error">✕</button>
           </div>
         )}
 
@@ -152,26 +163,14 @@ const AppContent: React.FC = () => {
           <div className="filter-inputs">
             <div className="filter-field">
               <label htmlFor="from-date">From</label>
-              <input
-                id="from-date"
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-              />
+              <input id="from-date" type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
             </div>
             <div className="filter-field">
               <label htmlFor="to-date">To</label>
-              <input
-                id="to-date"
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-              />
+              <input id="to-date" type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
             </div>
             {(fromDate || toDate) && (
-              <button className="clear-btn" onClick={handleClear}>
-                Clear
-              </button>
+              <button className="clear-btn" onClick={handleClear}>Clear</button>
             )}
           </div>
           {(fromDate || toDate) && (
@@ -190,30 +189,36 @@ const AppContent: React.FC = () => {
               editMode={editMode}
               onStatusChange={handleStatusChange}
               onDelete={handleDeleteGrant}
+              onEdit={setEditingGrant}
             />
           )}
         </div>
 
         {editMode && (
-          <button className="add-grant-btn" onClick={() => setShowAddModal(true)}>
-            +
-          </button>
+          <button className="add-grant-btn" onClick={() => setShowAddModal(true)}>+</button>
         )}
       </main>
 
       <footer className="footer">
-        <p>© 2026 Bloom Grant Directory · Click any row to learn more</p>
+        <p>© 2026 Bloom Grant Directory · {editMode ? 'Edit mode — click a row to edit' : 'Click any row to learn more'}</p>
       </footer>
 
       {showAddModal && (
         <AddGrantModal
           onAdd={handleAddGrant}
-          onClose={() => {
-            setShowAddModal(false);
-            setSubmitError(null);
-          }}
+          onClose={() => { setShowAddModal(false); setSubmitError(null); }}
           isSubmitting={isSubmitting}
           submitError={submitError}
+        />
+      )}
+
+      {editingGrant && (
+        <EditGrantModal
+          grant={editingGrant}
+          onSave={handleEditGrant}
+          onClose={() => { setEditingGrant(null); setEditError(null); }}
+          isSubmitting={isEditing}
+          submitError={editError}
         />
       )}
     </div>

@@ -11,9 +11,10 @@ interface GrantsTableProps {
   editMode?: boolean;
   onStatusChange?: (id: string, status: string) => void;
   onDelete?: (id: string) => void;
+  onEdit?: (grant: Grant) => void;
 }
 
-const GrantsTable: React.FC<GrantsTableProps> = ({ grants, editMode, onStatusChange, onDelete }) => {
+const GrantsTable: React.FC<GrantsTableProps> = ({ grants, editMode, onStatusChange, onDelete, onEdit }) => {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -34,8 +35,12 @@ const GrantsTable: React.FC<GrantsTableProps> = ({ grants, editMode, onStatusCha
     return 0;
   });
 
-  const handleRowClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const handleRowClick = (grant: Grant) => {
+    if (editMode && onEdit) {
+      onEdit(grant);
+    } else {
+      window.open(grant.url, '_blank', 'noopener,noreferrer');
+    }
   };
 
   const indicator = (field: SortField): string => {
@@ -87,9 +92,9 @@ const GrantsTable: React.FC<GrantsTableProps> = ({ grants, editMode, onStatusCha
               sortedGrants.map((grant) => (
                 <tr
                   key={grant.id}
-                  onClick={() => handleRowClick(grant.url)}
+                  onClick={() => handleRowClick(grant)}
                   className="clickable-row"
-                  title={`Click to open: ${grant.url}`}
+                  title={editMode ? 'Click to edit this grant' : `Click to open: ${grant.url}`}
                 >
                   <td className="col-name">{grant.name}</td>
                   <td className="col-geo">{grant.geographicEligibility}</td>
@@ -97,9 +102,6 @@ const GrantsTable: React.FC<GrantsTableProps> = ({ grants, editMode, onStatusCha
                   <td>
                     {editMode ? (
                       <div className="status-edit-cell">
-                        <span className={`status-badge status-${grant.applicationStatus.toLowerCase().replace(/\s+/g, '-')}`}>
-                          {grant.applicationStatus}
-                        </span>
                         <select
                           className="status-inline-select"
                           value={grant.applicationStatus}
