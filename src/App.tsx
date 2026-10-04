@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import GrantsTable from './GrantsTable';
@@ -55,12 +55,12 @@ const AppContent: React.FC = () => {
     return true;
   });
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setFromDate('');
     setToDate('');
-  };
+  }, []);
 
-  const handleAddGrant = async (grantData: Omit<Grant, 'id' | 'createdAt' | 'updatedAt'>) => {
+  const handleAddGrant = useCallback(async (grantData: Omit<Grant, 'id' | 'createdAt' | 'updatedAt'>) => {
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -75,9 +75,14 @@ const AppContent: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, []);
 
-  const handleEditGrant = async (id: string, updated: Partial<Omit<Grant, 'id' | 'createdAt' | 'updatedAt'>>) => {
+  const handleCloseAddModal = useCallback(() => {
+    setShowAddModal(false);
+    setSubmitError(null);
+  }, []);
+
+  const handleEditGrant = useCallback(async (id: string, updated: Partial<Omit<Grant, 'id' | 'createdAt' | 'updatedAt'>>) => {
     setIsEditing(true);
     setEditError(null);
     try {
@@ -92,23 +97,24 @@ const AppContent: React.FC = () => {
     } finally {
       setIsEditing(false);
     }
-  };
+  }, []);
 
-  const handleStatusChange = async (id: string, status: string) => {
-    const prev = grants.find((g) => g.id === id);
+  const handleCloseEditModal = useCallback(() => {
+    setEditingGrant(null);
+    setEditError(null);
+  }, []);
+
+  const handleStatusChange = useCallback(async (id: string, status: string) => {
     setGrants((all) => all.map((g) => g.id === id ? { ...g, applicationStatus: status } : g));
     try {
       await client.models.Grant.update({ id, applicationStatus: status });
     } catch (err) {
-      if (prev) {
-        setGrants((all) => all.map((g) => g.id === id ? { ...g, applicationStatus: prev.applicationStatus } : g));
-      }
       setError('Failed to update status. Please try again.');
       console.error('Error updating grant status:', err);
     }
-  };
+  }, []);
 
-  const handleDeleteGrant = async (id: string) => {
+  const handleDeleteGrant = useCallback(async (id: string) => {
     try {
       await client.models.Grant.delete({ id });
       setGrants((prev) => prev.filter((g) => g.id !== id));
@@ -116,7 +122,7 @@ const AppContent: React.FC = () => {
       setError('Failed to delete grant. Please try again.');
       console.error('Error deleting grant:', err);
     }
-  };
+  }, []);
 
   return (
     <div className={`app${editMode ? ' edit-mode' : ''}`}>
@@ -206,7 +212,7 @@ const AppContent: React.FC = () => {
       {showAddModal && (
         <AddGrantModal
           onAdd={handleAddGrant}
-          onClose={() => { setShowAddModal(false); setSubmitError(null); }}
+          onClose={handleCloseAddModal}
           isSubmitting={isSubmitting}
           submitError={submitError}
         />
@@ -216,7 +222,7 @@ const AppContent: React.FC = () => {
         <EditGrantModal
           grant={editingGrant}
           onSave={handleEditGrant}
-          onClose={() => { setEditingGrant(null); setEditError(null); }}
+          onClose={handleCloseEditModal}
           isSubmitting={isEditing}
           submitError={editError}
         />
